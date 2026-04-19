@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>عبدالعزيز العريفي | أمن سيبراني</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a0f;
+      --bg2: #080f18;
+      --surface: #0d1a26;
+      --border: #0e2a3d;
+      --accent: #00d4ff;
+      --accent2: #00ff88;
+      --accent3: #7b5ea7;
+      --text: #e2eaf2;
+      --muted: #6b8a9e;
+      --font-ar: 'IBM Plex Sans Arabic', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ar);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ─── GRID BACKGROUND ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── GLOW ORBS ─── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(0,212,255,0.06); top: -100px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(0,255,136,0.04); bottom: -100px; left: -100px; animation-delay: -4s; }
+    .orb-3 { width: 300px; height: 300px; background: rgba(123,94,167,0.05); top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -2s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(5,10,15,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+      font-family: var(--font-ar);
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 80px 80px;
+    }
+
+    .hero-inner {
+      max-width: 800px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      border: 1px solid rgba(0,212,255,0.3);
+      padding: 6px 14px;
+      border-radius: 4px;
+      margin-bottom: 28px;
+      background: rgba(0,212,255,0.05);
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-name {
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero-name span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-family: var(--font-mono);
+      font-size: clamp(14px, 2vw, 18px);
+      color: var(--muted);
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-title .typed-cursor {
+      color: var(--accent);
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 580px;
+      margin-bottom: 44px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--accent), #0099bb);
+      color: #000;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-family: var(--font-ar);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0,212,255,0.3);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 14px;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.3s;
+      background: var(--surface);
+      font-family: var(--font-ar);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ─── SECTION ─── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 100px 80px;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      margin-bottom: 48px;
+      line-height: 1.2;
+    }
+
+    /* ─── ABOUT ─── */
+    #about {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .about-text p strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+
+    .skill-card:hover::before { transform: scaleX(1); }
+    .skill-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-4px); }
+
+    .skill-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .skill-name {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .skill-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ─── TAGS ─── */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+      transition: all 0.3s;
+    }
+
+    .tag:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    /* ─── TERMINAL CARD ─── */
+    .terminal {
+      background: #030810;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      margin-top: 48px;
+    }
+
+    .terminal-bar {
+      background: var(--surface);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #febc2e; }
+    .dot-g { background: #28c840; }
+
+    .terminal-title {
+      margin-right: auto;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .terminal-body {
+      padding: 24px;
+      line-height: 2;
+    }
+
+    .t-prompt { color: var(--accent2); }
+    .t-cmd { color: var(--accent); }
+    .t-out { color: var(--muted); padding-right: 20px; }
+    .t-val { color: var(--text); }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 60px 40px;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    }
+
+    .contact-card h3 {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+      margin-bottom: 36px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .linkedin-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #0077b5;
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 16px 36px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-family: var(--font-ar);
+    }
+
+    .linkedin-btn:hover {
+      background: #005e91;
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,119,181,0.4);
+    }
+
+    .linkedin-icon {
+      width: 22px; height: 22px;
+      fill: white;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 18px; }
+      .hero { padding: 100px 24px 60px; }
+      section { padding: 70px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">&lt;AA /&gt;</div>
+    <ul class="nav-links">
+      <li><a href="#about">عني</a></li>
+      <li><a href="#skills">المهارات</a></li>
+      <li><a href="#certs">الشهادات</a></li>
+      <li><a href="#contact">التواصل</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">طالب أمن سيبراني</div>
+      <h1 class="hero-name">عبدالعزيز<br/><span>العريفي</span></h1>
+      <p class="hero-title" id="typed-text">أمن سيبراني | اختبار اختراق | أمن شبكات<span class="typed-cursor">_</span></p>
+      <p class="hero-desc">
+        طالب متخصص في مجال الأمن السيبراني، شغفي في اكتشاف الثغرات وحماية الأنظمة والشبكات.
+        أسعى لبناء مستقبل في اختبار الاختراق وأمن الشبكات.
+      </p>
+      <div class="hero-btns">
+        <a href="https://www.linkedin.com/in/عبد-العزيز-العريفي-58743229a?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          لينكدان
+        </a>
+        <a href="https://x.com/kh7j_?s=21&t=vW2SnjVDIpoUbUEwP4O1qQ" target="_blank" class="btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          تويتر / X
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label">// about_me</div>
+    <h2 class="section-title">من أنا؟</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          أنا <strong>عبدالعزيز العريفي</strong>، طالب متخصص في مجال <strong>الأمن السيبراني</strong>.
+          اهتمامي الأساسي يتمحور حول اختبار الاختراق، تحليل الثغرات الأمنية، وحماية البنية التحتية للشبكات.
+        </p>
+        <p>
+          أؤمن بأن الأمن السيبراني ليس مجرد تقنية، بل هو <strong>تفكير استراتيجي</strong> يجمع بين الفهم العميق للأنظمة والقدرة على التفكير مثل المهاجم لتحصين الدفاعات.
+        </p>
+        <p>
+          أطور مهاراتي باستمرار من خلال الكورسات المعتمدة والعمل على بيئات محاكاة واقعية.
+        </p>
+        <div class="tags">
+          <span class="tag">Kali Linux</span>
+          <span class="tag">Metasploit</span>
+          <span class="tag">Wireshark</span>
+          <span class="tag">Nmap</span>
+          <span class="tag">Burp Suite</span>
+          <span class="tag">Python</span>
+          <span class="tag">OWASP</span>
+          <span class="tag">CEH</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="about-stats">
+          <div class="stat-card">
+            <span class="stat-num">4</span>
+            <div class="stat-label">شهادات معتمدة</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">CTF</span>
+            <div class="stat-label">تحديات أمنية</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">Net+</span>
+            <div class="stat-label">أمن الشبكات</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">CAPT</span>
+            <div class="stat-label">اختبار اختراق</div>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+            <span class="terminal-title">whoami.sh</span>
+          </div>
+          <div class="terminal-body">
+            <div><span class="t-prompt">➜</span> <span class="t-cmd">whoami</span></div>
+            <div class="t-out">عبدالعزيز العريفي</div>
+            <div><span class="t-prompt">➜</span> <span class="t-cmd">cat role.txt</span></div>
+            <div class="t-out">Cybersecurity Student</div>
+            <div><span class="t-prompt">➜</span> <span class="t-cmd">cat status.txt</span></div>
+            <div><span class="t-val" style="color:var(--accent2);">[ LEARNING & GROWING ]</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label">// core_skills</div>
+    <h2 class="section-title">التخصصات</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔍</div>
+        <div class="skill-name">اختبار الاختراق</div>
+        <div class="skill-desc">اكتشاف الثغرات الأمنية في الأنظمة والتطبيقات باستخدام أدوات احترافية مثل Metasploit وBurp Suite.</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🛡️</div>
+        <div class="skill-name">أمن الشبكات</div>
+        <div class="skill-desc">تحليل حركة المرور، الكشف عن التهديدات، وتأمين البنية التحتية للشبكات من الهجمات.</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🌐</div>
+        <div class="skill-name">أمن تطبيقات الويب</div>
+        <div class="skill-desc">فهم عميق بـ OWASP Top 10 واختبار ثغرات SQL Injection وXSS وغيرها.</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔎</div>
+        <div class="skill-name">التحليل الجنائي الرقمي</div>
+        <div class="skill-desc">جمع الأدلة الرقمية وتحليل الحوادث الأمنية وتتبع مصادر الهجمات.</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-name">أنظمة لينكس</div>
+        <div class="skill-desc">إتقان العمل على Kali Linux وأنظمة Unix في بيئات الأمن السيبراني.</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-name">البرمجة والأتمتة</div>
+        <div class="skill-desc">كتابة سكريبتات Python وBash لأتمتة مهام الفحص والاختبار الأمني.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certs" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section-label">// certifications</div>
+    <h2 class="section-title">الشهادات والكورسات</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);border-radius:8px;padding:10px;font-size:22px;">🛡️</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);background:rgba(0,212,255,0.08);padding:4px 10px;border-radius:4px;">Cisco</div>
+        </div>
+        <div class="skill-name">Introduction to Cybersecurity</div>
+        <div class="skill-desc">مقدمة شاملة في مفاهيم الأمن السيبراني، التهديدات، وأساليب الحماية الحديثة.</div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:8px;padding:10px;font-size:22px;">🎩</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent2);background:rgba(0,255,136,0.08);padding:4px 10px;border-radius:4px;">EC-Council</div>
+        </div>
+        <div class="skill-name">The Ethical Hacker</div>
+        <div class="skill-desc">أسس القرصنة الأخلاقية، منهجيات اختبار الاختراق، وأدوات الفحص الاحترافية.</div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="background:rgba(123,94,167,0.1);border:1px solid rgba(123,94,167,0.3);border-radius:8px;padding:10px;font-size:22px;">🌐</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent3);background:rgba(123,94,167,0.08);padding:4px 10px;border-radius:4px;">Cisco</div>
+        </div>
+        <div class="skill-name">Networking Basics</div>
+        <div class="skill-desc">أساسيات الشبكات، بروتوكولات TCP/IP، وبنية الشبكات الحديثة.</div>
+      </div>
+
+      <div class="skill-card reveal" style="border-color:rgba(0,212,255,0.2);background:linear-gradient(135deg,var(--surface),rgba(0,212,255,0.03));">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.4);border-radius:8px;padding:10px;font-size:22px;">🏆</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);background:rgba(0,212,255,0.1);padding:4px 10px;border-radius:4px;">CAPT</div>
+        </div>
+        <div class="skill-name">Certified Associate Penetration Tester</div>
+        <div class="skill-desc">شهادة معتمدة في اختبار الاختراق تغطي المنهجيات الاحترافية والأدوات المتقدمة.</div>
+        <div style="margin-top:14px;display:inline-block;font-family:var(--font-mono);font-size:11px;color:var(--accent);border:1px solid rgba(0,212,255,0.3);padding:4px 12px;border-radius:4px;">✦ شهادة معتمدة</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-label">// contact</div>
+    <h2 class="section-title" style="text-align:center;">تواصل معي</h2>
+    <div class="contact-card reveal">
+      <h3>هل أنت صاحب فرصة؟ 👋</h3>
+      <p>حديث التخرج ومتحمس للانضمام لفريق أمني محترف. تواصل معي عبر لينكدان وسأرد في أقرب وقت.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://www.linkedin.com/in/%D8%B9%D8%A8%D8%AF-%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2-%D8%A7%D9%84%D8%B9%D8%B1%D9%8A%D9%81%D9%8A-58743229a" target="_blank" class="linkedin-btn">
+          <svg class="linkedin-icon" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          لينكدان
+        </a>
+        <a href="https://x.com/kh7j_" target="_blank" class="linkedin-btn" style="background:#000;border:1px solid #333;">
+          <svg class="linkedin-icon" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          تويتر / X
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>عبدالعزيز العريفي</span> — cybersecurity portfolio © 2026
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // Typing effect
+    const roles = [
+      'أمن سيبراني | اختبار اختراق | أمن شبكات',
+      'Penetration Tester | Network Security',
+      'Cybersecurity Graduate | CTF Player'
+    ];
+    let ri = 0, ci = 0, deleting = false;
+    const el = document.getElementById('typed-text');
+
+    function type() {
+      const current = roles[ri];
+      if (!deleting) {
+        ci++;
+        el.innerHTML = current.slice(0, ci) + '<span class="typed-cursor">_</span>';
+        if (ci === current.length) { deleting = true; setTimeout(type, 2200); return; }
+      } else {
+        ci--;
+        el.innerHTML = current.slice(0, ci) + '<span class="typed-cursor">_</span>';
+        if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+      }
+      setTimeout(type, deleting ? 40 : 80);
+    }
+    setTimeout(type, 1200);
+  </script>
+</body>
+</html>
